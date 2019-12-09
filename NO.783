@@ -1,0 +1,35 @@
+Minimum Distance Between BST Nodes
+难度：Easy
+题意：找出BST中任意两节点的差的最小值
+解题思路：BST的中序遍历序列是有序的，只需按中序遍历不断更新差值即可，这里采用递归的方式
+
+遇到的问题：在做count=root->val-*max<count?root->val-*max:count;这一句比较的时候，需要给定max一个初始值，由于题目没有非负这一条件，如果赋值为INT_MIN,则
+后续会出现int溢出的问题。这里采用了一个int指针，将BST中最小结点的值赋给max作为初值。
+
+code：
+
+class Solution {
+public:
+    int* max;
+    int count=INT_MAX;
+    int minDiffInBST(TreeNode* root) {
+        inorder(root);
+        return count;
+    }
+    
+    void inorder(TreeNode* root)
+    {
+        if(root->left)inorder(root->left);
+        if(!max)
+        {
+            max=&root->val;
+        }
+        else
+        {
+            count=root->val-*max<count?root->val-*max:count;
+            max=&root->val;
+        }
+        
+        if(root->right)inorder(root->right);
+    }
+};
