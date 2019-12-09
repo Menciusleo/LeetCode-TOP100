@@ -1,0 +1,43 @@
+Gray Code
+
+难度：medium
+题意：给定一个非负整数n，给出n位格雷码的序列，要求相邻两码之间只能有一位不同
+解题思路：想到了C++的位操作，使用bitset，构建一个16位的bitset，按DFS的思想，从右至左逐位翻转，有效就存入结果中
+所谓有效，即该数还未存入结果，这里使用了哈希表来判断。
+
+code：
+
+class Solution {
+public:
+    vector<int> grayCode(int n) {
+        bitset<16> num(0);
+        unordered_set<bitset<16>> hashset;
+        vector<int> res;
+        hashset.insert(num);
+        res.push_back((int)num.to_ulong());
+        int count=1;
+        int total=pow(2,n);
+        while(count<total)
+        {
+            for(int i=0;i<n;i++)
+            {
+                num.flip(i);
+                if(hashset.count(num)==0)
+                {
+                    hashset.insert(num);
+                    res.push_back((int)num.to_ulong());
+                    count++;
+                    i=-1;
+                }
+                else
+                {
+                    num.flip(i);
+                }
+            }
+            
+        }
+        return res;
+    }
+    
+    
+};
