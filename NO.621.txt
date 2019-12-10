@@ -1,0 +1,35 @@
+Task Scheduler
+难度：Medium
+题意：给了一个字符向量，元素A-Z，可以重新排序，但是要求相同元素之间相隔至少n个元素，如果某位没有元素可放，可以用idle代替。要求找到符合条件的排列的最小长度，即要求在满足条件下，idle尽可能少。
+解题思路：
+
+code：
+
+int leastInterval(vector<char>& tasks, int n) {
+        unordered_map<char,int> hashmap;
+        for(auto it:tasks)
+        {
+            hashmap[it]++;
+        }
+        int max=0;
+        int max_count=1;
+        for(auto it:hashmap)
+        {
+            if(it.second>max)
+            {
+                max=it.second;
+                max_count=1;
+            }
+            else if(it.second==max)
+            {
+                max_count++;
+            }
+        }
+        int total = (n+1)*(max-1)+max_count;
+        return total > tasks.size() ? total : tasks.size();
+    }
+
+
+结果：
+Runtime: 64 ms, faster than 62.91% of C++ online submissions for Task Scheduler.
+Memory Usage: 9.8 MB, less than 76.60% of C++ online submissions for Task Scheduler.
