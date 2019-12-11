@@ -1,0 +1,21 @@
+Missing Number
+难度：easy
+题意：给一个包含0-n的数组，但是其中有一个元素缺失，返回缺失的元素
+解题思路：若无缺失元素，则数组的总和为n*(n+1)/2，减去实际给出的数组的总和，即为缺失元素值
+
+code：
+
+int missingNumber(vector<int>& nums) {
+        int sum=0;
+        int length=nums.size();
+        length = length*(length+1)/2;
+        for(auto it:nums)
+        {
+            sum+=it;
+        }
+        return length-sum;
+    }
+
+结果：
+Runtime: 24 ms, faster than 82.44% of C++ online submissions for Missing Number.
+Memory Usage: 9.8 MB, less than 90.20% of C++ online submissions for Missing Number.
