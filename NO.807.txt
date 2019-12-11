@@ -1,0 +1,37 @@
+Max Increase to Keep City Skyline
+
+难度：medium
+题意：给出一个二维矩阵，其值作为高度，前视图和左视图会得到一个轮廓，即所谓天际线，现在要求增高二维矩阵中的值，但是要求不改变天际线，计算出增加值的最大值 。
+解答思路：对于二维矩阵中的grid[i][j]，这个值所能增加到的最大值，应该要小于矩阵第i行的最大值和第j列的最大值二者中的较小者。这里需要先求得特定行的最大值和列的最大值，可以分别构建一个向量来存储。
+需要做两次遍历，第一次求得两个最大值构成的向量，第二次根据这些值来计算增量。
+
+code：
+
+int maxIncreaseKeepingSkyline(vector<vector<int>>& grid) {
+        int row=grid[0].size();
+        int col=grid.size();
+        vector<int> top(col,0);
+        vector<int> left(row,0);
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<col;j++)
+            {
+                left[i]=max(left[i],grid[i][j]);
+                top[j]=max(top[j],grid[i][j]);
+            }
+        }
+        //return top[3];
+        int res=0;
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<col;j++)
+            {
+                res+=min(left[i],top[j])-grid[i][j];
+            }
+        }
+        return res;
+    }
+
+结果：
+Runtime: 8 ms, faster than 74.43% of C++ online submissions for Max Increase to Keep City Skyline.
+Memory Usage: 9.1 MB, less than 100.00% of C++ online submissions for Max Increase to Keep City Skyline.

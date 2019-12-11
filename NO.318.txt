@@ -1,0 +1,39 @@
+Maximum Product of Word Lengths
+难度：medium
+题意：给一个由string组成的数组，找出两个互相不包含重复元素的string，要求其长度之积最大。返回这个最大的乘积
+解题思路：首先是找出不包含重复元素的string，首先想到使用哈希表，后来看了大佬@stefanpochmann 的解法，使用位操作可以显著减小空间开销。同时也会使后续的判别更简单。具体思路是遍历string，每个字符与‘a’的差值作为左移次数，然后取或。这样做的效果，相当于将a-z映射到了数据对应的每一个位上，由于小写字母26个，int在C++中占4字节共32位，因此这里使用int即可，如果字符的数量超过32，可以考虑使用long等位数更多的类型。第一次遍历将所有的string元素全部映射到int型，同时存储其长度，为后面做长度乘积准备。由于使用位操作，后续判别两个元素有没有重复元素，只需做按位与操作，如果都包含某字母，则对应那一位均为1。
+之后只需遍历获取乘积最大值即可。
+收货：按位与操作，在判断重复元素的妙用，可以极大减小开支，同时判别也会变得更容易。
+
+code：
+
+int maxProduct(vector<string>& words) {
+        vector<vector<int>> length(words.size(),{0,0});
+        int res=0;
+        if(words.empty())return res;
+        for(int i=0;i<words.size();i++)
+        {
+            int length1=0;
+            for(auto it:words[i])
+            {
+                length1 |= 1<<(it-'a');
+            }
+            length[i][0]=length1;
+            length[i][1]=words[i].size();
+        }
+        for(int i=0;i<length.size()-1;i++)
+        {
+            for(int j=i+1;j<length.size();j++)
+            {
+                if(!(length[i][0] & length[j][0]))
+                {
+                    res=max(length[i][1]*length[j][1],res);
+                }
+            }
+        }
+        return res;
+    }
+
+结果：
+Runtime: 68 ms, faster than 26.85% of C++ online submissions for Maximum Product of Word Lengths.
+Memory Usage: 14.8 MB, less than 46.67% of C++ online submissions for Maximum Product of Word Lengths.
