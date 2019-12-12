@@ -1,0 +1,45 @@
+Majority Element
+
+难度：easy
+题意：找出一个数组中出现次数最多的元素，该元素出现次数保证大于n/2.
+解题思路：建立一个hashmap，当某元素对应的值大于n/2，返回该元素。
+
+code：
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        unordered_map<int,int> hashmap;
+        for(auto it:nums)
+        {
+            hashmap[it]++;
+            if(hashmap[it]>nums.size()/2)return it;
+        }
+        return 0;
+    }
+};
+
+结果：
+Runtime: 20 ms, faster than 78.04% of C++ online submissions for Majority Element.
+Memory Usage: 11 MB, less than 96.97% of C++ online submissions for Majority Element.
+
+Boyer-Moore Voting Algorithm
+
+public class Solution {
+    public int majorityElement(int[] num) {
+
+        int major=num[0], count = 1;
+        for(int i=1; i<num.length;i++){
+            if(count==0){
+                count++;
+                major=num[i];
+            }else if(major==num[i]){
+                count++;
+            }else count--;
+            
+        }
+        return major;
+    }
+}
+
+其中当count==0时，说明已经遍历的元素中，没有所谓的主要元素。该元素在剩余部分一定也是主要元素。
