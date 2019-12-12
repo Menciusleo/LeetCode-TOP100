@@ -1,0 +1,56 @@
+Solve the Equation
+
+难度：medium
+题意：给一个string类型的一元方程，如"x+5-3+x=6+x-2"，求解方程。
+解题思路：主要涉及到字符串的一些基本操作，由于是一元方程，不需要矩阵计算，只需计算出x的系数和常数。需要区分系数和常数。
+两个迭代器来对字符串分块，上述例子，划分为x，+5，-3，+x,6,+x,-2。然后可以定义一个函数，专门对子字符串处理
+题目不难，但是实际情况很多，如x，-x，+x等等，写起来比较繁琐。
+
+code：
+
+string solveEquation(string equation) {
+    	vector<int> fac{ 0,0 };
+    	string::iterator lo = equation.begin();
+    	int flag = 1;
+    	string res;
+    	for (auto hi = equation.begin(); hi < equation.end(); hi++)
+    	{
+    		if (*hi == '-' || *hi == '=' || *hi == '+')
+    		{
+    			string str = string(lo, hi);
+                calc(str,fac,flag);
+                lo = hi;
+    	        if (*hi == '=')
+    	        {
+    		        lo++;
+    		        flag = -1;
+    	        }
+    		}
+    	}
+    	string str = string(lo, equation.end());
+    	calc(str,fac,flag);
+	    if (fac[0] == 0)
+	    {
+		    if (fac[1] == 0)return "Infinite solutions";
+		    else return "No solution";
+	    }
+	    return "x=" + to_string(fac[1] / fac[0] * (-1));
+    }
+    
+    inline void calc(string str,vector<int>& fac,int flag)
+    {
+        if(str.empty())return;
+    	if (str == "x" )fac[0]+=flag;
+    	else if (str.back() == 'x')
+    	{
+    		str.pop_back();
+    		if (str == "+")fac[0] += flag;
+            else if(str == "-")fac[0] -= flag;
+    		else fac[0] += stoi(str)*flag;
+    	}
+    	else
+    	{
+    		fac[1] += stoi(str)*flag;
+    	}
+    	
+    }
