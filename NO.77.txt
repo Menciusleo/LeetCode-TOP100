@@ -1,0 +1,57 @@
+Combinations
+
+难度：medium
+题意：给定两个整数n和k，给出 从1-n中选取k个数的所有组合
+解题思路：DFS，类似八皇后问题，从第一位逐个按升序添加。
+第一次没有用到升序，导致做了许多重复运输，还需要判断之前的是否添加，导致超时。
+
+code：
+
+class Solution {
+public:
+    vector<vector<int>> Vec;
+    vector<int> vec;
+	vector<vector<int>> combine(int n, int k) {
+		helper(0, n, k, 1);
+		return Vec;
+	}
+
+	void helper(int row, int n, int k, int begin)
+	{
+		if (row == k)
+		{
+			Vec.push_back(vec);
+			return;
+		}
+		for (int i = begin; i <= n; i++)
+		{
+			vec.push_back(i);
+			helper(row + 1, n, k, i+1);
+			vec.pop_back();
+		}
+		return;
+	}
+};
+
+结果：
+Runtime: 96 ms, faster than 37.22% of C++ online submissions for Combinations.
+Memory Usage: 11.8 MB, less than 90.00% of C++ online submissions for Combinations.
+
+后面贴上大佬的迭代 @hengyi，很精妙
+vector<vector<int>> combine(int n, int k) {
+		vector<vector<int>> result;
+		int i = 0;
+		vector<int> p(k, 0);
+		while (i >= 0) {
+			p[i]++;
+			if (p[i] > n) --i;
+			else if (i == k - 1) result.push_back(p);
+			else {
+			    ++i;
+			    p[i] = p[i - 1];
+			}
+		}
+		return result;
+	}
+
+其中p[i] > n可以替换成p[i] > n-k+i+1，减少无效的循环。
