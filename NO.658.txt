@@ -1,0 +1,28 @@
+Find K Closest Elements
+
+难度：medium
+题意：给定一个数组，两个int k和x，找出数组中与x差绝对值最小的k个数，如果存在相等的情况，较小的元素优先
+解题思路：首先通过二分查找的方式，找出数组中最接近x的元素。然后以该元素为起点，通过两个low和high指针，确定范围。
+使用了lower——bound函数做二分查找，会返回等于或最小的大于该元素的索引。
+
+code：
+
+vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+        if(arr.size()==k)return arr;
+        int index=lower_bound(arr.begin(),arr.end(),x)-arr.begin();
+        int lo=index-1;
+        int hi=index;
+        while(hi-lo<k+1 && lo>=0 && hi<arr.size())
+        {
+            if(arr[hi]-x>=x-arr[lo])lo--;
+            else hi++;
+        }
+        if(hi==arr.size())lo=hi-k-1;
+        if(lo==-1)hi=lo+k+1;
+        vector<int > nums(arr.begin()+lo+1,arr.begin()+hi);
+        return nums;
+    }
+
+结果：
+Runtime: 92 ms, faster than 98.10% of C++ online submissions for Find K Closest Elements.
+Memory Usage: 13 MB, less than 66.67% of C++ online submissions for Find K Closest Elements.
