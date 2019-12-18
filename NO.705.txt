@@ -1,0 +1,62 @@
+Design HashSet
+
+难度：easy
+题意：实现一个哈希表
+解题思路：构建一个vector<list<int>>的向量作为bucket。
+
+遇到的问题：使用了list，其中remove操作之后，迭代器it会无效，需要将list.erase的返回值赋给it。
+
+code：
+
+class MyHashSet {
+private:
+	int fac;
+
+public:
+	vector<list<int>> vec;
+
+	/** Initialize your data structure here. */
+	MyHashSet() {
+		fac = 128;
+		vec = vector<list<int>>(128);
+	}
+
+	void add(int key) {
+		int hashvalue = key % 128;
+		list<int> &head = vec[hashvalue];
+        if(contains(key))return;
+		head.push_back(key);
+	}
+
+	void remove(int key) {
+		int hashvalue = key % 128;
+		list<int> &head = vec[hashvalue];
+		for (auto it = head.begin(); it != head.end();)
+		{
+			if (*it == key)
+            {
+                head.erase(it);
+                return ;
+            }
+            else
+            {
+                it++;
+            }
+		}
+	}
+
+	/** Returns true if this set contains the specified element */
+	bool contains(int key) {
+		int hashvalue = key % 128;
+		list<int> &head = vec[hashvalue];
+		for (auto it = head.begin(); it != head.end(); it++)
+		{
+			if (*it == key)return true;
+		}
+		return false;
+	}
+};
+结果：
+Runtime: 112 ms, faster than 43.93% of C++ online submissions for Design HashSet.
+Memory Usage: 37.6 MB, less than 94.44% of C++ online submissions for Design HashSet.
+

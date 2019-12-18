@@ -1,0 +1,100 @@
+Design Linked List
+
+难度：medium
+题意：自己实现一个链表。
+解题思路：这里实现了一个单向链表
+
+code：
+
+class MyLinkedList {
+public:
+	struct Node {
+		int val;
+		Node* next;
+
+		Node(int value) :val(value), next(NULL) {};
+	};
+	Node* head=NULL;
+    int size;
+	/** Initialize your data structure here. */
+	MyLinkedList() {
+        size=0;
+	}
+
+	/** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
+	int get(int index) {
+        
+		Node* ptr = head;
+		int count = index;
+		while (count != 0)
+		{
+			ptr = ptr->next;
+			count--;
+		}
+		if(ptr)
+			return ptr->val;
+		else
+		{
+			return -1;
+		}
+	}
+
+	/** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
+	void addAtHead(int val) {
+		Node* new_node = new Node(val);
+		new_node->next = head;
+		head = new_node;
+        size++;
+	}
+
+	/** Append a node of value val to the last element of the linked list. */
+	void addAtTail(int val) {
+		Node** ptr = &head;
+		while (*ptr)
+		{
+			ptr = &((*ptr)->next);
+		}
+		*ptr = new Node(val);
+        size++;
+	}
+
+	/** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
+	void addAtIndex(int index, int val) {
+        if (index == 0)addAtHead(val);
+		Node** ptr = &head;
+		while (index != 1 && (*ptr)->next)
+		{
+			ptr = &((*ptr)->next);
+			index--;
+		}
+		if (index == 1)
+		{
+			Node* new_node = new Node(val);
+			new_node->next = (*ptr)->next;
+			(*ptr)->next = new_node;
+            size++;
+		}
+		else return;
+	}
+
+	/** Delete the index-th node in the linked list, if the index is valid. */
+	void deleteAtIndex(int index) {
+		Node** pre = &head;
+		while (index != 0 && (*pre)->next)
+		{
+			pre = &((*pre)->next);
+			index--;
+		}
+		if (index == 0)
+        {
+            *pre = (*pre)->next;
+            size--;
+        }
+		else return;
+	}
+};
+
+
+结果：
+Runtime: 52 ms, faster than 41.36% of C++ online submissions for Design Linked List.
+Memory Usage: 19.1 MB, less than 88.89% of C++ online submissions for Design Linked List.

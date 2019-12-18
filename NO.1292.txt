@@ -1,0 +1,56 @@
+Maximum Side Length of a Square with Sum Less than or Equal to Threshold
+
+难度：medium
+题意：给定一个m*n的矩阵和一个阈值，找出一个边长最大的子方阵，使得子方阵中所有元素之和不超过阈值，返回这个最大的边长。
+解题思路：思路很直接，首先最大的边长一定小于等于min（m,n），以该值作为起始条件。设计一个滑动的l*l的窗口，计算窗口中元素的总和，如果有小于等于阈值的，就返回该边长，否则减小边长然后继续遍历。
+存在的问题：首先需要遍历矩阵，复杂度为（m-l）*(n-l)，然后对于每个窗口计算总和又是l*l，因此这样计算复杂度很高会超时。为了减小计算，采用DP的手段计算窗口的总和。
+
+code：
+
+class Solution {
+public:
+    int maxSideLength(vector<vector<int>>& mat, int threshold) {
+        int res=0;
+        int row=mat.size();
+        int col=mat[0].size();
+        int total=min(row,col);
+        int n=total;
+        vector<vector<int>> DP(row+1,vector<int>(col+1,0));
+        for(int i=1;i<=row;i++)
+        {
+            for(int j=1;j<=col;j++)
+            {
+                DP[i][j]=mat[i-1][j-1]+DP[i-1][j]+DP[i][j-1]-DP[i-1][j-1];
+            }
+        }
+        while(n>=1)
+        {
+            for(int i=0;i<row-n+1;i++)
+            {
+                for(int j=0;j<col-n+1;j++)
+                {
+                    if(sum(mat,i,j,n,DP)<=threshold)
+                    {
+                        return n;
+                        //if(n<col-j && n<row-i)
+                        //    n++;
+                        //else break;
+                    }
+                }
+            }
+            n--;
+        }
+        return n;
+    }
+    
+    int sum(vector<vector<int>>& mat,int row,int col,int n,vector<vector<int>>& DP)
+    {
+        
+        return DP[row+n][col+n]-DP[row][col+n]-DP[row+n][col]+DP[row][col];
+        
+    }
+};
+
+结果：
+Runtime: 272 ms, faster than 51.62% of C++ online submissions for Maximum Side Length of a Square with Sum Less than or Equal to Threshold.
+Memory Usage: 19.8 MB, less than 100.00% of C++ online submissions for Maximum Side Length of a Square with Sum Less than or Equal to Threshold.
