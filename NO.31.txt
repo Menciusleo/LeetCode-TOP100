@@ -1,0 +1,27 @@
+Next Permutation
+
+难度：medium
+题意：给一个数组，数组可以看做一个整数，例如【1,2,3】看做是123，要求返回由数组中元素组成的下一个比它大的数，比如1,2,3组成的123的下一个数是132.
+解题思路：就是要找出现有排列中的最后的一个逆序对，即逆序对的前一个元素最靠后，将逆序对交换，然后对后续的元素排序即可
+
+code：
+
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        for(auto it1=nums.end()-1;it1>=nums.begin();it1--)
+        {
+            for(auto it2=nums.end()-1;it2!=it1;it2--)
+            {
+                if(*it1<*it2)
+                {
+                    swap(*it1,*it2);
+                    sort(it1+1,nums.end());
+                    return;
+                }
+            }
+        }
+        sort(nums.begin(),nums.end());
+        return;
+    }
+};
