@@ -1,0 +1,34 @@
+Unique Binary Search Trees
+
+难度：medium
+题意：给定一个整数n，计算由1-n所能构成的不同二叉搜索树的总数。
+解题思路：dp的思路，n个数，取第k个结点作为根结点，左右子树共由剩下的n-1个结点构成，具体来说，则左子树有k-1个结点，右子树有n-k个结点。即左子树可能的形式为F(k-1），右子树为F(n-k），相乘即为k作为根结点时二叉树的总数。k的取值范围为1-n。同时根据对称性，只需遍历1到（n-1）/2，并对数量乘2。但是需要考虑n-1为奇偶的情况，若为偶数，则左右子树均为F（（n-1）/2）；此时不能乘2.
+
+code：
+
+class Solution {
+public:
+    int numTrees(int n) {
+        vector<int> dp(n+1,0);
+        dp[0]=1;
+        dp[1]=1;
+        for(int i=2;i<=n;i++)
+        {
+            for(int k=0;k<=(i-1)/2;k++)
+            {
+                if(2*k==i-1)
+                {
+                    dp[i]+=dp[k]*dp[i-1-k];
+                }
+                else
+                    dp[i]+=dp[k]*dp[i-1-k]*2;
+            }
+            
+        }
+        return dp.back();
+    }
+};
+
+结果：
+Runtime: 0 ms, faster than 100.00% of C++ online submissions for Unique Binary Search Trees.
+Memory Usage: 8.3 MB, less than 90.91% of C++ online submissions for Unique Binary Search Trees.
