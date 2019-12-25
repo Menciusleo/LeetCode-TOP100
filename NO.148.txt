@@ -1,0 +1,85 @@
+Sort List
+
+难度：medium
+题意：用O(n log n) 的复杂度给一个单向链表排序且空间复杂度为常数级.
+解题思路：单向链表的归并排序
+
+code：
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+	ListNode* sortList(ListNode* head) {
+        if(!head)return head;
+		ListNode* ptr = head;
+		int length = 0;
+		while (ptr)
+		{
+			length++;
+			ptr = ptr->next;
+		}
+		return helper(head, length);
+	}
+
+	ListNode* helper(ListNode* head, int length)
+	{
+		if (length == 1)return head;
+		ListNode* ptr1 = head;
+		int mid = length / 2;
+		while (mid)
+		{
+			head = head->next;
+			mid--;
+		}
+		ListNode* ptr2 = head;
+		int length1 = length / 2;
+		int length2 = length - length1;
+		ptr1 = helper(ptr1, length1);
+		ptr2 = helper(ptr2, length2);
+
+		ListNode* first = new ListNode(0);
+		ListNode* cur = first;
+		first->next = ptr1;
+		while (length1!=0 && length2!=0)
+		{
+			if (ptr1->val <= ptr2->val)
+			{
+				cur->next = ptr1;
+				ptr1 = ptr1->next;
+				cur = cur->next;
+				length1--;
+			}
+			else
+			{
+				cur->next = ptr2;
+				ptr2 = ptr2->next;
+				cur = cur->next;
+				length2--;
+			}
+		}
+		while (length1!=0)
+        {
+            cur->next = ptr1;
+			ptr1 = ptr1->next;
+			cur = cur->next;
+			length1--;
+        }
+        
+		while (length2!=0)
+        {
+            cur->next = ptr2;
+			ptr2 = ptr2->next;
+			cur = cur->next;
+			length2--;
+        }
+        cur->next=NULL;
+		return first->next;
+	}
+};
