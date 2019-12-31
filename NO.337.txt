@@ -1,0 +1,63 @@
+House Robber III
+
+难度：medium
+题意：给一个二叉树，求和规则为不能同时包含父节点和其直接子节点。
+解题思路：二叉树的问题，一般考虑用递归的方式求解。由于父结点和其直接子节点不能同时包含，则对于每一个结点，其最大和，应该等于包含左子结点的最大值+包含右子结点的最大值 与 该结点的值+不包含左子结点的最大值+不包含右子结点的最大值 中的最大值。自下而上递归求解
+
+code：
+
+int rob(TreeNode* root)
+{
+        
+	vector<int> vec=helper(root);
+        
+	return vec[0]>vec[1]?vec[0]:vec[1];
+    
+}
+    
+    
+vector<int> helper(TreeNode* root)
+    
+{
+        
+	vector<int> res(2,0);   //res[0]包含该结点的最大值，res[1]不包含该结点的最大值
+
+        	if(!root)return res;
+
+        	vector<int> vec1=helper(root->left);
+
+        	vector<int> vec2=helper(root->right);
+
+        
+        res[0]=root->val+vec1[1]+vec2[1];
+
+        	res[1]=max(vec1[0],vec1[1])+max(vec2[0],vec2[1]);
+
+        	return res;
+
+}
+结果：
+Runtime: 24 ms
+Memory Usage: 27.9 MB
+
+经过优化之后的
+int rob(TreeNode* root) {
+        int l=0,r=0;
+        helper(root,l,r);
+        return l>r?l:r;
+    }
+    
+    void helper(TreeNode* root,int &l,int &r)
+    {
+        int ll=0,lr=0,rl=0,rr=0;   //res[0]包含该结点的最大值，res[1]不包含该结点的最大值
+        if(!root)return;
+        helper(root->left,ll,lr);
+        helper(root->right,rl,rr);
+        
+        l=root->val+lr+rr;
+        r=max(ll,lr)+max(rl,rr);
+    }
+
+结果：
+Runtime: 16 ms, faster than 79.27% of C++ online submissions for House Robber III.
+Memory Usage: 20.5 MB, less than 100.00% of C++ online submissions for House Robber III.
