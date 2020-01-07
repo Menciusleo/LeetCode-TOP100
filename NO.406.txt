@@ -1,0 +1,31 @@
+Queue Reconstruction by Height
+
+难度：medium
+题意：给定一个N*2的二维数组，N[0]代表高度，N[1]代表前面N-1个中比N[0]高的元素数量，给的数组是无序的，按该要求给数组排序。
+Input:
+[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+
+Output:
+[[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
+解题思路：我们应该先对高度更高的元素进行排序，因为当我们对高度更低的元素排序时，不会对高的元素产生影响，如例子里面的[7,0],[7,1]，我们将[6,1]不论插入何处，都不会影响到[7,0],[7,1]。
+首先需要对数组排序，先按高度排，高度大的靠前，同高度的第二个元素小的靠前。这里用到了lambda表达式，相关语法
+
+code：
+
+class Solution {
+public:
+    vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+        sort(people.begin(),people.end(),[](vector<int> a,vector<int> b) {return (a[0]>b[0] || (a[0]==b[0] && a[1]<b[1]) );});
+        //return people;
+        vector<vector<int>> res;
+        for(auto it:people)
+        {
+            res.insert(res.begin()+it[1],it);
+        }
+        return res;
+    }
+};
+
+结果：
+Runtime: 132 ms, faster than 17.74% of C++ online submissions for Queue Reconstruction by Height.
+Memory Usage: 25.5 MB, less than 9.52% of C++ online submissions for Queue Reconstruction by Height.

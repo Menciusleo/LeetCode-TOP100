@@ -1,0 +1,31 @@
+Subsets
+
+难度：medium
+题意：给一个数组，返回所有子数组构成的集合
+解题思路：DP的思想，例如[1,2,3]，[1]可以构成的有[],[1],之后[1,2]可以构成的集合，相当于在[1]的集合的基础上添加2这个元素，即[2],[1,2].可得[1,2]的子数组集合为[],[1],[2],[1,2]。同理再添加3.逐步推进
+
+code：
+
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> vec;
+        res.push_back(vec);
+        for(auto it:nums)
+        {
+            int size=res.size();
+            for(int i=0;i<size;i++)
+            {
+                vec=res[i];
+                vec.push_back(it);
+                res.push_back(vec);
+            }
+        }
+        return res;
+    }
+};
+
+结果：
+Runtime: 4 ms, faster than 97.84% of C++ online submissions for Subsets.
+Memory Usage: 9 MB, less than 98.31% of C++ online submissions for Subsets.

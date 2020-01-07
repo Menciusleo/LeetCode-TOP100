@@ -1,0 +1,39 @@
+Palindromic Substrings
+
+难度：medium
+题意：给一个字符串，返回所有回文子串的个数
+解题思路：判断是否是回文串，按奇偶分为两种情况，奇数情况：遍历整个串，以每个元素为中心，两边同时添加元素，若是符合回文条件count++，否则判断下一个元素。偶数情况：同样遍历整个串，只是中心有两个元素，按同样的方法。
+
+code：
+
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int count=0;
+        for(int i=0;i<s.size();i++)
+        {
+            for(int j=0;i-j>=0&&i+j<=s.size()-1;j++)
+            {
+                if(s[i-j]==s[i+j])count++;
+                else break;
+            }
+            if(i>=1 && s[i]==s[i-1])
+            {
+                for(int j=0;i-j-1>=0 && i+j<=s.size()-1;j++)
+                {
+                    if(s[i-j-1]==s[i+j])count++;
+                    else break;
+                }
+            }
+        }
+        return count;
+    }
+    
+};
+
+结果：
+Runtime: 4 ms, faster than 90.61% of C++ online submissions for Palindromic Substrings.
+Memory Usage: 8.5 MB, less than 84.00% of C++ online submissions for Palindromic Substrings.
+
+关于回文串：
+马拉车算法：
