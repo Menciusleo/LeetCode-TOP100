@@ -1,0 +1,32 @@
+Minimum Path Sum
+
+难度：medium
+题意：对于一个m*n的矩阵，只能向右或者向下移动，找到一条路径，使得路径上元素总和最小
+解题思路：DP的问题，和爬楼梯等问题的思路一致。移动到第i,j处的路径总和，等于i-1，j和i，j-1的路径之和的较小者+该处的元素。即dp[j]=min(dp[j-1],dp[j])+grid[i][j];
+
+code：
+
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        vector<int> dp(grid[0].size(),0);
+        dp[0]=grid[0][0];
+        for(int i=1;i<dp.size();i++)
+        {
+            dp[i]=dp[i-1]+grid[0][i];
+        }
+        for(int i=1;i<grid.size();i++)
+        {
+            dp[0]=dp[0]+grid[i][0];
+            for(int j=1;j<dp.size();j++)
+            {
+                dp[j]=min(dp[j-1],dp[j])+grid[i][j];
+            }
+        }
+        return dp.back();
+    }
+};
+
+结果：
+Runtime: 4 ms, faster than 99.61% of C++ online submissions for Minimum Path Sum.
+Memory Usage: 10.4 MB, less than 100.00% of C++ online submissions for Minimum Path Sum.

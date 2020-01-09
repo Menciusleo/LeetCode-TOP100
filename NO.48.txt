@@ -1,0 +1,30 @@
+Rotate Image
+
+难度：medium
+题意：顺时针旋转一个二维矩阵，要求in-place。
+解题思路：逐个旋转即可
+
+code：
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int N=matrix.size();
+        for(int i=0;i<N/2;i++)
+        {
+            for(int j=i;j<N-1-i;j++)
+            {
+                int temp=matrix[i][j];
+                matrix[i][j]=matrix[N-1-j][i];
+                matrix[N-1-j][i]=matrix[N-1-i][N-1-j];
+                matrix[N-1-i][N-1-j]=matrix[j][N-1-i];
+                matrix[j][N-1-i]=temp;
+            }
+        }
+        
+    }
+};
+
+结果：
+Runtime: 4 ms, faster than 82.90% of C++ online submissions for Rotate Image.
+Memory Usage: 8.9 MB, less than 100.00% of C++ online submissions for Rotate Image.

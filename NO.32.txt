@@ -1,0 +1,35 @@
+Longest Valid Parentheses
+
+难度：hard
+题意：给一个由‘（‘，’）’组成的字符串，找出有效子字符串的最大长度.
+解题思路：通过栈来判断子字符串是否有效，当s[i]=='('时，s[i]入栈，当s[i]==')'时，有两种情况，第一种是栈中还存在'('的元素，此时应该弹栈，同时说明这一段子串是有效的，计算长度；第二种是没有'('，则此时s[i]是无效的，且无法构成有效子串，这时我们应该在以后的元素里面重新开始寻找有效子串。这时我们可以将该索引入栈，记录上一个无效子串的最后一个位置，这样当我们后面找到有效子串的末尾后，可以根据这个位置来计算长度。而-1可以作为第一个无效位置。
+栈中存储的索引包括：从当前位置i往前数第一个无效位置的索引，且在始终存在栈底；所有还未被匹配的'('的索引，且按先后顺序分布。
+
+code：
+
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        stack<int> stk;
+        int res=0;
+        stk.push(-1);
+        for(int i=0;i<s.size();i++)
+        {
+            if(s[i]=='(')stk.push(i);
+            else
+            {
+                stk.pop();
+                if(stk.empty())stk.push(i);
+                else{
+                    int length=i-stk.top();
+                    res=res>length?res:length;
+                }
+            }
+        }
+        return res;
+    }
+};
+
+结果：
+Runtime: 8 ms, faster than 62.00% of C++ online submissions for Longest Valid Parentheses.
+Memory Usage: 9.5 MB, less than 75.00% of C++ online submissions for Longest Valid Parentheses.

@@ -1,0 +1,52 @@
+Find All Anagrams in a String
+
+难度：medium
+题意：给定两个字符串s,p.找出s中所有可以由p转化成的字串，返回所有子串的起始索引构成的向量
+解题思路：典型的滑动窗口题。两个指针low和high，判断low和high之间的元素与p是否相同，这里判断是否相同可以使用哈希表
+
+code：
+
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        unordered_map<char,int> hashmap1;
+        unordered_map<char,int> hashmap2;
+        vector<int> res;
+        for(auto it:p)
+        {
+            hashmap1[it]++;
+        }
+        int lo=0;
+        int hi=0;
+        int count=0;
+        while(hi<s.size())
+        {
+            if(hashmap1.count(s[hi])>0)
+            {
+                if(hashmap2[s[hi]]<hashmap1[s[hi]])
+                {
+                    hashmap2[s[hi]]++;
+                    hi++;
+                }
+                else
+                {
+                    hashmap2[s[lo]]--;;
+                    lo++;
+                }
+            }
+            else
+            {
+                lo=hi+1;
+                hi++;
+                hashmap2.clear();
+            }
+            count=hi-lo;
+            if(count==p.size())res.push_back(lo);
+        }
+        return res;
+    }
+};
+
+结果：
+Runtime: 48 ms, faster than 29.80% of C++ online submissions for Find All Anagrams in a String.
+Memory Usage: 12 MB, less than 25.00% of C++ online submissions for Find All Anagrams in a String.

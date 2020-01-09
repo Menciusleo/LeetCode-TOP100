@@ -1,0 +1,27 @@
+Unique Paths
+
+难度：medium
+题意：对于一个m*n的矩阵，只能向右或者向下移动，问从左上角到右下角共有多少种不同的移动方式
+解题思路：典型DP的问题，和爬楼梯等问题的思路一致。移动到第i,j处的路径总数，等于i-1，j和i，j-1的路径之和
+
+code：
+
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        vector<int> dp(n+1,0);
+        dp[1]=1;
+        for(int j=1;j<=m;j++)
+        {
+            for(int i=1;i<dp.size();i++)
+            {
+                dp[i]=dp[i-1]+dp[i];
+            }
+        }
+        return dp.back();
+    }
+};
+
+结果：
+Runtime: 0 ms, faster than 100.00% of C++ online submissions for Unique Paths.
+Memory Usage: 8.2 MB, less than 90.63% of C++ online submissions for Unique Paths.
